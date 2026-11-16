@@ -1,7 +1,7 @@
-import path from 'node:path';
 import { ModelloSessione } from './modello';
 import { Motivo, OpzioniStato, Sessione, Stato, Strumento } from './tipi';
 import type { InfoHook } from './hook';
+import { nomeCartella } from './piattaforma';
 
 /** Strumenti che possono durare a lungo da soli: se sono fermi NON vuol dire che aspettano un permesso. */
 const LENTI = new Set(['Bash', 'PowerShell', 'Agent', 'Task', 'WebSearch', 'WebFetch', 'Monitor', 'Skill', 'Workflow', 'SendMessage']);
@@ -86,7 +86,7 @@ export function vistaSessione(m: ModelloSessione, sotto: Sessione[], o: OpzioniS
   return {
     id: m.id, file: m.file, padreId: extra.padreId, toolUseIdPadre: extra.toolUseIdPadre, tipoAgente: extra.tipoAgente,
     titolo: extra.descrizione ?? m.titolo,
-    progetto: extra.progettoPadre?.progetto ?? (cwd ? path.basename(cwd) || cwd : 'sconosciuto'),
+    progetto: extra.progettoPadre?.progetto ?? (cwd ? nomeCartella(cwd) : 'sconosciuto'),
     cwdProgetto: cwd, cwdAttuale: m.cwdAttuale, ramo: m.ramo, entrypoint: m.entrypoint, versione: m.versione, modello: m.modello, modoPermessi: m.modoPermessi,
     primoPrompt: m.primoPrompt, ultimoPrompt: m.ultimoPrompt, ultimoTesto: m.ultimoTesto,
     inizio: m.inizio, ultimaAttivita: m.ultimaAttivita,

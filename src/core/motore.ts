@@ -8,6 +8,7 @@ import { ordina, vistaSessione } from './stato';
 import { OPZIONI_STATO_DEFAULT, Sessione } from './tipi';
 import { oscura, suOgniStringa } from './oscura';
 import { EventoHook, StatoHook } from './hook';
+import { nomeCartella } from './piattaforma';
 
 export interface OpzioniMotore {
   radice?: string;                  // default ~/.claude/projects
@@ -186,7 +187,7 @@ export class Motore extends EventEmitter {
   }
   private vistaFiglio(f: Voce, madre: Voce | undefined, os_: ReturnType<Motore['opzStato']>, maxStrumenti: number) {
     const cwd = madre?.modello.cwdStabile;
-    const progettoPadre = cwd ? { progetto: path.basename(cwd) || cwd, cwd } : undefined;
+    const progettoPadre = cwd ? { progetto: nomeCartella(cwd), cwd } : undefined;
     return vistaSessione(f.modello, [], os_, {
       padreId: f.sessioneId, toolUseIdPadre: f.meta?.toolUseId, tipoAgente: f.meta?.agentType, descrizione: f.meta?.description,
       finitoMeta: f.meta?.finished, progettoPadre, hook: f.agentId ? { attivo: this.hook.attivo(f.agentId) || this.hook.attivo(f.sessioneId), info: this.hook.di(f.agentId) } : undefined,

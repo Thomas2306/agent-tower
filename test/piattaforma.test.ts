@@ -1,6 +1,6 @@
 import zlib from 'node:zlib';
 import { describe, expect, it } from 'vitest';
-import { capacita, parole, scorciatoiaLeggibile, sistema } from '../src/core/piattaforma';
+import { capacita, nomeCartella, parole, scorciatoiaLeggibile, sistema } from '../src/core/piattaforma';
 import { comandoHook } from '../src/core/installa-hook';
 import { disegna, png } from '../src/main/icone';
 
@@ -43,5 +43,13 @@ describe('icona del tray in PNG (uguale su tutti i sistemi)', () => {
     // pallino rosso in basso a destra (12,12)
     const i = 12 * (n * 4 + 1) + 1 + 12 * 4;
     expect([righe[i], righe[i + 1], righe[i + 2], righe[i + 3]]).toEqual([229, 72, 77, 255]);
+  });
+});
+
+describe('nome del progetto da un percorso', () => {
+  it('va bene con percorsi Windows e Mac/Linux, ovunque giri', () => {
+    expect(nomeCartella('C:\\Users\\a\\progetti\\esempio')).toBe('esempio');
+    expect(nomeCartella('/Users/a/dev/torre/')).toBe('torre');
+    expect(nomeCartella('C:\\')).toBe('C:');
   });
 });

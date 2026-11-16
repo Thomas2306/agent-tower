@@ -44,3 +44,8 @@ export function scorciatoiaLeggibile(acc: string, s: Sistema) {
   const p = parole(s);
   return acc.split('+').map((k) => (k === 'Control' || k === 'Ctrl' ? p.ctrl : k === 'Alt' ? p.alt : k)).join('+');
 }
+
+/** Ultimo pezzo di un percorso, sia "C:\a\b" sia "/a/b" (i registri possono venire da un altro sistema). */
+export function nomeCartella(p: string): string {
+  return p.replace(/[\\/]+$/, '').split(/[\\/]/).pop() || p;
+}
