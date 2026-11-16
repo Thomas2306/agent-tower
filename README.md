@@ -24,10 +24,12 @@ Legge solo i file in `~/.claude` (sola lettura). Niente rete, niente account: lo
 | `Ctrl+Alt+F` | Fantasma sì / no |
 
 ## Scaricare
-I pacchetti sono nella pagina **Actions → pacchetti** (o nelle Release):
+### 👉 [Scarica l'ultima versione](https://github.com/Thomas2306/agent-tower/releases/latest)
+
+Scegli il file del tuo sistema:
 - **Windows**: `agent-tower-…-win-x64.exe`
 - **macOS**: `agent-tower-…-mac-arm64.dmg` (Apple Silicon) o `…-mac-x64.dmg` (Intel). Non firmato: la prima volta clic destro → Apri.
-- **Linux**: `…-linux-x86_64.AppImage` o `.deb`
+- **Linux**: `…-linux-x86_64.AppImage` (qualsiasi distro) o `…-linux-amd64.deb` (Ubuntu/Debian)
 
 macOS e Linux sono **da provare**: segnala pure i problemi nelle Issues.
 
