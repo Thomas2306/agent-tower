@@ -156,6 +156,17 @@ describe('installazione in settings.json', () => {
     applica(f, path.join(tmp, 'b3'), CMD, 'rimuovi');
     expect(fs.readFileSync(f, 'utf8')).toBe(orig);
   });
+
+  it('due backup nello stesso millisecondo: il secondo prende un numero, il primo non si tocca', () => {
+    const f = path.join(tmp, 'stesso-ms.json');
+    fs.writeFileSync(f, '{\n  "theme": "dark"\n}\n');
+    const ora = new Date('2026-11-16T10:00:00.000Z');
+    const a = applica(f, path.join(tmp, 'b4'), CMD, 'installa', ora).backup!;
+    const b = applica(f, path.join(tmp, 'b4'), CMD, 'rimuovi', ora).backup!;
+    expect(b).not.toBe(a);
+    expect(b.endsWith('-1.bak')).toBe(true);
+    expect(fs.readFileSync(a, 'utf8')).toBe('{\n  "theme": "dark"\n}\n');
+  });
 });
 
 describe('script dello hook → server locale (vero, con node)', () => {

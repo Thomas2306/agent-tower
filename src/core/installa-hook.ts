@@ -117,8 +117,11 @@ export function applica(file: string, cartellaBackup: string, comando: string, a
   if (esiste) {
     fs.mkdirSync(cartellaBackup, { recursive: true });
     const stamp = ora.toISOString().replace(/[:.]/g, '-');
-    backup = path.join(cartellaBackup, `settings.json.${stamp}.bak`);
-    fs.writeFileSync(backup, testo, { flag: 'wx' });
+    // mai sovrascrivere un backup: se due arrivano nello stesso millisecondo, il secondo prende un numero
+    for (let n = 0; ; n++) {
+      backup = path.join(cartellaBackup, `settings.json.${stamp}${n ? `-${n}` : ''}.bak`);
+      try { fs.writeFileSync(backup, testo, { flag: 'wx' }); break; } catch (e: any) { if (e?.code !== 'EEXIST' || n >= 99) throw e; }
+    }
   }
   const testoNuovo = scrivi(nuovo, formato(testo || '{\n  "a": 1\n}\n'));
   // il file è cambiato mentre lavoravamo? meglio fermarsi
