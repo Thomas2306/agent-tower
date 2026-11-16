@@ -1,0 +1,9 @@
+node_modules/
+dist/
+out/
+*.log
+
+# note di lavoro e prove con dati del PC di sviluppo: restano solo in locale
+PIANO.md
+STATO.md
+docs/

@@ -1,0 +1,107 @@
+{
+  "name": "agent-tower",
+  "version": "1.0.0",
+  "description": "Always-on-top overlay (Windows, macOS, Linux) showing every Claude Code agent at work",
+  "scripts": {
+    "test": "vitest run",
+    "torre": "tsx scripts/torre-testo.ts",
+    "spia": "tsx scripts/spia.ts",
+    "estrai-fixture": "tsx scripts/estrai-fixture.ts",
+    "tipi": "tsc -p .",
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "pacchetto": "electron-vite build && electron-builder --publish never",
+    "pacchetto:win": "electron-vite build && electron-builder --win --publish never",
+    "pacchetto:mac": "electron-vite build && electron-builder --mac --publish never",
+    "pacchetto:linux": "electron-vite build && electron-builder --linux --publish never"
+  },
+  "keywords": [],
+  "author": "AGENT TOWER contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "electron": "^45.3.2",
+    "electron-builder": "^26.18.0",
+    "electron-vite": "^6.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  },
+  "private": true,
+  "main": "./out/main/index.js",
+  "build": {
+    "appId": "dev.agenttower.app",
+    "productName": "AGENT TOWER",
+    "artifactName": "agent-tower-${version}-${os}-${arch}.${ext}",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "out/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "risorse",
+        "to": "risorse",
+        "filter": [
+          "*.cjs"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "category": "public.app-category.developer-tools",
+      "extendInfo": {
+        "LSUIElement": true
+      }
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Development",
+      "maintainer": "AGENT TOWER contributors <noreply@example.invalid>",
+      "synopsis": "See every Claude Code agent at work",
+      "syncDesktopName": true
+    }
+  },
+  "desktopName": "agent-tower.desktop"
+}
