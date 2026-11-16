@@ -39,6 +39,15 @@ describe('titolo e progetto', () => {
     expect(m.cwdAttuale).toBe('C:\\Users\\utente\\Downloads');
   });
 
+  it('stesse regole con i percorsi Mac/Linux, su qualunque sistema giri l\'app', () => {
+    const cwd = (c: string, sec: number) => R.usa(sec, `t${sec}`, 'Read', { file_path: 'x' }, { cwd: c });
+    const righe = [R.prompt(0, 'a', { cwd: '/Users/utente' }), cwd('/Users/utente/.claude/projects', 1), cwd('/opt', 2),
+      cwd('/Users/utente/dev/torre', 3), cwd('/Users/utente/dev/torre/src', 4), cwd('/tmp/prova/x', 5), cwd('/Users/utente/Downloads', 6)];
+    const m = new ModelloSessione('sess-2', 'x.jsonl', { home: '/Users/utente', tmp: '/tmp' });
+    righe.forEach((r) => m.elaboraRiga(r));
+    expect(m.cwdStabile).toBe('/Users/utente/dev/torre');
+  });
+
   it('nel turno nuovo il progetto segue il lavoro, finché non c\'è niente resta quello di prima', () => {
     const cwd = (c: string, sec: number) => R.usa(sec, `t${sec}`, 'Read', { file_path: 'x' }, { cwd: c });
     const m = nuovo(R.prompt(0, 'a', { cwd: HOME }), cwd('C:\\dev\\uno', 1), cwd('C:\\dev\\uno', 2));

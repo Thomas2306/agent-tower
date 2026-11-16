@@ -98,7 +98,7 @@ export class ModelloSessione {
     this.cwdAttuale = cwd;
     if (!this.primoCwd) this.primoCwd = cwd;
     const n = norm(cwd);
-    if (n === this.home || n.startsWith(this.claudeDir + path.sep) || n === this.claudeDir || n.startsWith(this.tmp)) return;
+    if (n === this.home || n.startsWith(this.claudeDir + '/') || n === this.claudeDir || n.startsWith(this.tmp)) return;
     if (n.split(/[\\/]/).filter(Boolean).length < 3) return;
     const v = this.cwdTurno.get(n); if (v) v.n++; else this.cwdTurno.set(n, { orig: cwd, n: 1 });
     this.cwdScelto = undefined;
@@ -111,7 +111,7 @@ export class ModelloSessione {
     let meglio: { orig: string; punti: number; prof: number } | undefined;
     for (const [n, v] of this.cwdTurno) {
       let punti = 0;
-      for (const [m, w] of this.cwdTurno) if (m === n || m.startsWith(n + path.sep)) punti += w.n;
+      for (const [m, w] of this.cwdTurno) if (m === n || m.startsWith(n + '/')) punti += w.n;
       const prof = n.length;
       if (!meglio || punti > meglio.punti || (punti === meglio.punti && prof > meglio.prof)) meglio = { orig: v.orig, punti, prof };
     }
@@ -257,7 +257,14 @@ export class ModelloSessione {
   }
 }
 
-function norm(p: string) { return path.resolve(p).toLowerCase().replace(/[\\/]+$/, ''); }
+/**
+ * Forma di confronto di un percorso, uguale su ogni sistema: minuscole, barre "/", senza barra finale.
+ * Riconosce da sola i percorsi Windows (C:\…) anche quando l'app gira su Mac/Linux, e viceversa.
+ */
+function norm(p: string) {
+  const r = /^[a-z]:[\\/]|^\\\\/i.test(p) ? path.win32.resolve(p) : path.posix.resolve(p);
+  return r.toLowerCase().replace(/\\/g, '/').replace(/\/+$/, '');
+}
 
 export function testoRisultato(c: unknown): string {
   if (typeof c === 'string') return c;

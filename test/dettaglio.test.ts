@@ -52,7 +52,7 @@ describe('dettaglio', () => {
   });
 
   it('trova il file .output di un comando in background', () => {
-    const m = motore({ trasformaPercorso: (p: string) => p.replace('{{FIXTURES}}', F) });
+    const m = motore({ trasformaPercorso: (p: string) => p.replace('{{FIXTURES}}', F).replace(/\\/g, path.sep) });
     const s = m.istantanea().find((x) => x.titolo.includes('(background)'))!;
     const bg = m.dettaglio(s.id)!.strumenti.find((t) => t.background)!;
     const f = m.fileOutput(s.id, bg.id)!;
